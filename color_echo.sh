@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# 用法: color_echo "message" "color" "style"
+
+color_echo() {
+    # 定义颜色
+    local style=0
+    case $3 in
+        "bold") style="1" ;;  # 粗体或高亮
+        "lighten") style="2" ;;  # 次亮
+        "italic") style="3" ;;  # 斜体，并非所有的终端都支持
+        "underline") style="4" ;;  # 下划线
+        "blink") style="5" ;;  # 闪烁
+        "reverse") style="7" ;;  # 反显
+        "conceal") style="8" ;;  # 隐匿
+        "strike") style="9" ;;  # 删除线, 并非所有的终端都支持
+        *) style="0" ;;
+    esac
+
+    local COLOR_PREFIX="\033[${style};"
+    local RESET='\033[0m'
+
+    case "$2" in
+        "red") echo -e "${COLOR_PREFIX}31m$1${RESET}" ;;
+        "green") echo -e "${COLOR_PREFIX}32m$1${RESET}" ;;
+        "yellow") echo -e "${COLOR_PREFIX}33m$1${RESET}" ;;
+        "blue") echo -e "${COLOR_PREFIX}34m$1${RESET}" ;;
+        "purple") echo -e "${COLOR_PREFIX}35m$1${RESET}" ;;
+        "cyan") echo -e "${COLOR_PREFIX}36m$1${RESET}" ;;
+        "white") echo -e "${COLOR_PREFIX}37m$1${RESET}" ;;
+        *) echo -e "$1" ;;
+    esac
+}
