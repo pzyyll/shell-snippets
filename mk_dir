@@ -1,0 +1,40 @@
+mk_dir() {
+    local dir="$1"
+    local user=${USER:-$(whoami)}
+    local group=$(id -gn $user)
+
+    if [ -d "$dir" ]; then
+        echo "Directory $dir already exists."
+        return 1
+    fi
+
+    local root_dir="$dir"   # return the first directory that does not exist
+    local parent_dir=$(dirname "$dir")
+
+    while [ ! -d "$parent_dir" ]; do
+        root_dir="$parent_dir"
+        parent_dir=$(dirname "$parent_dir")
+    done
+
+    if sudo mkdir -p "$dir"; then
+        echo "$root_dir"
+        sudo chown -R $user:$group "$root_dir"
+        return 0
+    else
+        echo "Failed to create directory $dir."
+        return 1
+    fi
+}
+
+test_mk_dir() {
+    local result=$(mk_dir "yes/or/you/like")
+    echo $result $?
+    result=$(mk_dir "yes/but/you/like")
+    echo $result $?
+    result=$(mk_dir "yes/but/and/you/like")
+    echo $result $?
+    result=$(mk_dir "yes/but")
+    echo $result $?
+}
+
+test_mk_dir

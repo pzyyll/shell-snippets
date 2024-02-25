@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # 用法: color_echo "message" "color" "style"
 
 color_echo() {
