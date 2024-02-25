@@ -1,0 +1,44 @@
+# 函数定义：更新或添加环境变量到指定文件
+# 使用方式: add_env_var 文件 变量名 变量值
+add_env_var() {
+    local file=$1
+    local var_name=$2
+    local var_value=$3
+
+    # 检查文件是否存在
+    if [ ! -f "$file" ]; then
+        echo "文件不存在: $file"
+        return 1
+    fi
+
+    # 检查变量是否已存在
+    if grep -q "^export $var_name=" "$file"; then
+        # 变量存在，更新其值
+        sed -i "/^export $var_name=/c\export $var_name=\"$var_value\"" "$file"
+    else
+        # 变量不存在，添加到文件末尾
+        echo "export $var_name=\"$var_value\"" >> "$file"
+    fi
+}
+
+# 函数定义：从指定文件中删除环境变量
+# 使用方式: delete_env_var 文件 变量名
+delete_env_var() {
+    local file=$1
+    local var_name=$2
+
+    # 检查文件是否存在
+    if [ ! -f "$file" ]; then
+        echo "文件不存在: $file"
+        return 1
+    fi
+
+    # 检查变量是否存在并删除
+    if grep -q "^export $var_name=" "$file"; then
+        # 变量存在，从文件中删除
+        sed -i "/^export $var_name=/d" "$file"
+        echo "已删除变量: $var_name"
+    else
+        echo "变量不存在: $var_name"
+    fi
+}
