@@ -36,5 +36,3 @@ test_mk_dir() {
     result=$(mk_dir "yes/but")
     echo $result $?
 }
-
-test_mk_dir
