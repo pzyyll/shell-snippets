@@ -7,3 +7,4 @@ source /dev/stdin <<< "$(curl -s https://raw.githubusercontent.com/pzyyll/shell-
 color_echo "Hello, world!" red
 mk_dir "test"
 mk_dir "test/test1"
+mk_dir "test/test2"
